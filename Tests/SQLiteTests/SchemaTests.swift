@@ -360,6 +360,62 @@ class SchemaTests : XCTestCase {
         )
     }
 
+    func test_column_withStringExpression_compilesReferentialColumnDefinitionExpression() {
+        XCTAssertEqual(
+            "CREATE TABLE \"table\" (\"string\" TEXT NOT NULL REFERENCES \"table\" (\"string\"))",
+            table.create { t in t.column(string, references: table, string) }
+        )
+        XCTAssertEqual(
+            "CREATE TABLE \"table\" (\"string\" TEXT NOT NULL REFERENCES \"table\" (\"string\"))",
+            table.create { t in t.column(string, references: qualifiedTable, string) }
+        )
+        XCTAssertEqual(
+            "CREATE TABLE \"table\" (\"string\" TEXT NOT NULL UNIQUE REFERENCES \"table\" (\"string\"))",
+            table.create { t in t.column(string, unique: true, references: table, string) }
+        )
+        XCTAssertEqual(
+            "CREATE TABLE \"table\" (\"string\" TEXT NOT NULL CHECK (\"string\" != '') REFERENCES \"table\" (\"string\"))",
+            table.create { t in t.column(string, check: string != "", references: table, string) }
+        )
+        XCTAssertEqual(
+            "CREATE TABLE \"table\" (\"string\" TEXT NOT NULL CHECK (\"stringOptional\" != '') REFERENCES \"table\" (\"string\"))",
+            table.create { t in t.column(string, check: stringOptional != "", references: table, string) }
+        )
+        XCTAssertEqual(
+            "CREATE TABLE \"table\" (\"string\" TEXT NOT NULL UNIQUE CHECK (\"string\" != '') REFERENCES \"table\" (\"string\"))",
+            table.create { t in t.column(string, unique: true, check: string != "", references: table, string) }
+        )
+        XCTAssertEqual(
+            "CREATE TABLE \"table\" (\"string\" TEXT NOT NULL UNIQUE CHECK (\"stringOptional\" != '') REFERENCES \"table\" (\"string\"))",
+            table.create { t in t.column(string, unique: true, check: stringOptional != "", references: table, string) }
+        )
+
+        XCTAssertEqual(
+            "CREATE TABLE \"table\" (\"stringOptional\" TEXT REFERENCES \"table\" (\"string\"))",
+            table.create { t in t.column(stringOptional, references: table, string) }
+        )
+        XCTAssertEqual(
+            "CREATE TABLE \"table\" (\"stringOptional\" TEXT UNIQUE REFERENCES \"table\" (\"string\"))",
+            table.create { t in t.column(stringOptional, unique: true, references: table, string) }
+        )
+        XCTAssertEqual(
+            "CREATE TABLE \"table\" (\"stringOptional\" TEXT CHECK (\"string\" != '') REFERENCES \"table\" (\"string\"))",
+            table.create { t in t.column(stringOptional, check: string != "", references: table, string) }
+        )
+        XCTAssertEqual(
+            "CREATE TABLE \"table\" (\"stringOptional\" TEXT CHECK (\"stringOptional\" != '') REFERENCES \"table\" (\"string\"))",
+            table.create { t in t.column(stringOptional, check: stringOptional != "", references: table, string) }
+        )
+        XCTAssertEqual(
+            "CREATE TABLE \"table\" (\"stringOptional\" TEXT UNIQUE CHECK (\"string\" != '') REFERENCES \"table\" (\"string\"))",
+            table.create { t in t.column(stringOptional, unique: true, check: string != "", references: table, string) }
+        )
+        XCTAssertEqual(
+            "CREATE TABLE \"table\" (\"stringOptional\" TEXT UNIQUE CHECK (\"stringOptional\" != '') REFERENCES \"table\" (\"string\"))",
+            table.create { t in t.column(stringOptional, unique: true, check: stringOptional != "", references: table, string) }
+        )
+    }
+
     func test_column_withStringExpression_compilesCollatedColumnDefinitionExpression() {
         XCTAssertEqual(
             "CREATE TABLE \"table\" (\"string\" TEXT NOT NULL COLLATE RTRIM)",
@@ -683,6 +739,58 @@ class SchemaTests : XCTestCase {
         XCTAssertEqual(
             "ALTER TABLE \"table\" ADD COLUMN \"int64Optional\" INTEGER UNIQUE CHECK (\"int64Optional\" > 0) REFERENCES \"table\" (\"int64\")",
             table.addColumn(int64Optional, unique: true, check: int64Optional > 0, references: table, int64)
+        )
+    }
+
+    func test_addColumn_withStringExpression_compilesReferentialAlterTableExpression() {
+        XCTAssertEqual(
+            "ALTER TABLE \"table\" ADD COLUMN \"string\" TEXT NOT NULL REFERENCES \"table\" (\"string\")",
+            table.addColumn(string, references: table, string)
+        )
+        XCTAssertEqual(
+            "ALTER TABLE \"table\" ADD COLUMN \"string\" TEXT NOT NULL UNIQUE REFERENCES \"table\" (\"string\")",
+            table.addColumn(string, unique: true, references: table, string)
+        )
+        XCTAssertEqual(
+            "ALTER TABLE \"table\" ADD COLUMN \"string\" TEXT NOT NULL CHECK (\"string\" != '') REFERENCES \"table\" (\"string\")",
+            table.addColumn(string, check: string != "", references: table, string)
+        )
+        XCTAssertEqual(
+            "ALTER TABLE \"table\" ADD COLUMN \"string\" TEXT NOT NULL CHECK (\"stringOptional\" != '') REFERENCES \"table\" (\"string\")",
+            table.addColumn(string, check: stringOptional != "", references: table, string)
+        )
+        XCTAssertEqual(
+            "ALTER TABLE \"table\" ADD COLUMN \"string\" TEXT NOT NULL UNIQUE CHECK (\"string\" != '') REFERENCES \"table\" (\"string\")",
+            table.addColumn(string, unique: true, check: string != "", references: table, string)
+        )
+        XCTAssertEqual(
+            "ALTER TABLE \"table\" ADD COLUMN \"string\" TEXT NOT NULL UNIQUE CHECK (\"stringOptional\" != '') REFERENCES \"table\" (\"string\")",
+            table.addColumn(string, unique: true, check: stringOptional != "", references: table, string)
+        )
+
+        XCTAssertEqual(
+            "ALTER TABLE \"table\" ADD COLUMN \"stringOptional\" TEXT REFERENCES \"table\" (\"string\")",
+            table.addColumn(stringOptional, references: table, string)
+        )
+        XCTAssertEqual(
+            "ALTER TABLE \"table\" ADD COLUMN \"stringOptional\" TEXT UNIQUE REFERENCES \"table\" (\"string\")",
+            table.addColumn(stringOptional, unique: true, references: table, string)
+        )
+        XCTAssertEqual(
+            "ALTER TABLE \"table\" ADD COLUMN \"stringOptional\" TEXT CHECK (\"string\" != '') REFERENCES \"table\" (\"string\")",
+            table.addColumn(stringOptional, check: string != "", references: table, string)
+        )
+        XCTAssertEqual(
+            "ALTER TABLE \"table\" ADD COLUMN \"stringOptional\" TEXT CHECK (\"stringOptional\" != '') REFERENCES \"table\" (\"string\")",
+            table.addColumn(stringOptional, check: stringOptional != "", references: table, string)
+        )
+        XCTAssertEqual(
+            "ALTER TABLE \"table\" ADD COLUMN \"stringOptional\" TEXT UNIQUE CHECK (\"string\" != '') REFERENCES \"table\" (\"string\")",
+            table.addColumn(stringOptional, unique: true, check: string != "", references: table, string)
+        )
+        XCTAssertEqual(
+            "ALTER TABLE \"table\" ADD COLUMN \"stringOptional\" TEXT UNIQUE CHECK (\"stringOptional\" != '') REFERENCES \"table\" (\"string\")",
+            table.addColumn(stringOptional, unique: true, check: stringOptional != "", references: table, string)
         )
     }
 

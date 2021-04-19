@@ -82,7 +82,15 @@ extension Table {
         return addColumn(definition(name, V.declaredDatatype, nil, false, unique, check, nil, (table, other), nil))
     }
 
+    public func addColumn<V : Value>(_ name: Expression<V>, unique: Bool = false, check: Expression<Bool>? = nil, references table: QueryType, _ other: Expression<V>) -> String where V.Datatype == String {
+        return addColumn(definition(name, V.declaredDatatype, nil, false, unique, check, nil, (table, other), nil))
+    }
+
     public func addColumn<V : Value>(_ name: Expression<V>, unique: Bool = false, check: Expression<Bool?>, references table: QueryType, _ other: Expression<V>) -> String where V.Datatype == Int64 {
+        return addColumn(definition(name, V.declaredDatatype, nil, false, unique, check, nil, (table, other), nil))
+    }
+
+    public func addColumn<V : Value>(_ name: Expression<V>, unique: Bool = false, check: Expression<Bool?>, references table: QueryType, _ other: Expression<V>) -> String where V.Datatype == String {
         return addColumn(definition(name, V.declaredDatatype, nil, false, unique, check, nil, (table, other), nil))
     }
 
@@ -90,7 +98,15 @@ extension Table {
         return addColumn(definition(name, V.declaredDatatype, nil, true, unique, check, nil, (table, other), nil))
     }
 
+    public func addColumn<V : Value>(_ name: Expression<V?>, unique: Bool = false, check: Expression<Bool>? = nil, references table: QueryType, _ other: Expression<V>) -> String where V.Datatype == String {
+        return addColumn(definition(name, V.declaredDatatype, nil, true, unique, check, nil, (table, other), nil))
+    }
+
     public func addColumn<V : Value>(_ name: Expression<V?>, unique: Bool = false, check: Expression<Bool?>, references table: QueryType, _ other: Expression<V>) -> String where V.Datatype == Int64 {
+        return addColumn(definition(name, V.declaredDatatype, nil, true, unique, check, nil, (table, other), nil))
+    }
+
+    public func addColumn<V : Value>(_ name: Expression<V?>, unique: Bool = false, check: Expression<Bool?>, references table: QueryType, _ other: Expression<V>) -> String where V.Datatype == String {
         return addColumn(definition(name, V.declaredDatatype, nil, true, unique, check, nil, (table, other), nil))
     }
 
@@ -271,7 +287,15 @@ public final class TableBuilder {
         column(name, V.declaredDatatype, nil, false, unique, check, nil, (table, other), nil)
     }
 
+    public func column<V : Value>(_ name: Expression<V>, unique: Bool = false, check: Expression<Bool>? = nil, references table: QueryType, _ other: Expression<V>) where V.Datatype == String {
+        column(name, V.declaredDatatype, nil, false, unique, check, nil, (table, other), nil)
+    }
+
     public func column<V : Value>(_ name: Expression<V>, unique: Bool = false, check: Expression<Bool?>, references table: QueryType, _ other: Expression<V>) where V.Datatype == Int64 {
+        column(name, V.declaredDatatype, nil, false, unique, check, nil, (table, other), nil)
+    }
+
+    public func column<V : Value>(_ name: Expression<V>, unique: Bool = false, check: Expression<Bool?>, references table: QueryType, _ other: Expression<V>) where V.Datatype == String {
         column(name, V.declaredDatatype, nil, false, unique, check, nil, (table, other), nil)
     }
 
@@ -279,7 +303,15 @@ public final class TableBuilder {
         column(name, V.declaredDatatype, nil, true, unique, check, nil, (table, other), nil)
     }
 
+    public func column<V : Value>(_ name: Expression<V?>, unique: Bool = false, check: Expression<Bool>? = nil, references table: QueryType, _ other: Expression<V>) where V.Datatype == String {
+        column(name, V.declaredDatatype, nil, true, unique, check, nil, (table, other), nil)
+    }
+
     public func column<V : Value>(_ name: Expression<V?>, unique: Bool = false, check: Expression<Bool?>, references table: QueryType, _ other: Expression<V>) where V.Datatype == Int64 {
+        column(name, V.declaredDatatype, nil, true, unique, check, nil, (table, other), nil)
+    }
+
+    public func column<V : Value>(_ name: Expression<V?>, unique: Bool = false, check: Expression<Bool?>, references table: QueryType, _ other: Expression<V>) where V.Datatype == String {
         column(name, V.declaredDatatype, nil, true, unique, check, nil, (table, other), nil)
     }
 
