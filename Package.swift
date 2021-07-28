@@ -1,15 +1,22 @@
-// swift-tools-version:4.0
+// swift-tools-version:5.2
 import PackageDescription
 
 let package = Package(
     name: "SQLite.swift",
     products: [.library(name: "SQLite", targets: ["SQLite"])],
+    dependencies: [
+        .package(name: "SQLCipher", url: "git@github.com:antwork/SQLCipher.git", from: "0.0.4"),
+    ],
     targets: [
-        .target(name: "SQLite", dependencies: ["SQLiteObjc"]),
+        .target(name: "SQLite", 
+            dependencies: ["SQLiteObjc", "SQLCipher"],
+            cSettings: [.define("SQLITE_SWIFT_SQLCIPHER")],
+            swiftSettings: [.define("SQLITE_SWIFT_SQLCIPHER")]
+        ),
         .target(name: "SQLiteObjc"),
         .testTarget(name: "SQLiteTests", dependencies: ["SQLite"], path: "Tests/SQLiteTests")
     ],
-    swiftLanguageVersions: [4, 5]
+    swiftLanguageVersions: [.v5]
 )
 
 #if os(Linux)
