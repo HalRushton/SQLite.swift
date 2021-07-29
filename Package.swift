@@ -3,13 +3,19 @@ import PackageDescription
 
 let package = Package(
     name: "SQLite.swift",
-    products: [.library(name: "SQLite", targets: ["SQLite"])],
+    products: [.library(name: "SQLite", targets: ["SQLite"]),
+         .library(name: "SQLiteCipher", targets: ["SQLiteCipher"]),
+    ],
     dependencies: [
         .package(name: "SQLCipher", url: "git@github.com:antwork/SQLCipher.git", from: "0.0.4"),
     ],
     targets: [
         .target(name: "SQLite", 
+            dependencies: ["SQLiteObjc"]
+        ),
+        .target(name: "SQLiteCipher", 
             dependencies: ["SQLiteObjc", "SQLCipher"],
+            path: "SQLite",
             cSettings: [.define("SQLITE_SWIFT_SQLCIPHER")],
             swiftSettings: [.define("SQLITE_SWIFT_SQLCIPHER")]
         ),
