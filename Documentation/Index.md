@@ -1905,6 +1905,13 @@ We can log SQL using the database’s `trace` function.
 #endif
 ```
 
+## Vacuum
+
+To run the [vacuum](https://www.sqlite.org/lang_vacuum.html) command:
+
+```swift
+try db.vacuum()
+```
 
 [ROWID]: https://sqlite.org/lang_createtable.html#rowid
 [SQLiteMigrationManager.swift]: https://github.com/garriguv/SQLiteMigrationManager.swift
