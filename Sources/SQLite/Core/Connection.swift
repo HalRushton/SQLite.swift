@@ -253,6 +253,17 @@ public final class Connection {
         return try prepare(statement).run(bindings)
     }
 
+    // MARK: - VACUUM
+
+    /// Run a vacuum on the database
+    ///
+    /// - Throws: `Result.Error` if query execution fails.
+    ///
+    /// - Returns: The statement.
+    @discardableResult public func vacuum() throws -> Statement {
+        try run("VACUUM")
+    }
+
     // MARK: - Scalar
 
     /// Runs a single SQL statement (with optional parameter bindings),
