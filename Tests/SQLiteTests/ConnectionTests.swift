@@ -38,14 +38,16 @@ class ConnectionTests : SQLiteTestCase {
 
     func test_init_withURI_returnsURIConnection() {
         let db = try! Connection(.uri("\(NSTemporaryDirectory())/SQLite.swift Tests.sqlite3"))
-        XCTAssertEqual("\(NSTemporaryDirectory())/SQLite.swift Tests.sqlite3", db.description)
+        let url = URL(fileURLWithPath: db.description)
+        XCTAssertEqual(url.lastPathComponent, "SQLite.swift Tests.sqlite3")
     }
 
     func test_init_withString_returnsURIConnection() {
         let db = try! Connection("\(NSTemporaryDirectory())/SQLite.swift Tests.sqlite3")
-        XCTAssertEqual("\(NSTemporaryDirectory())/SQLite.swift Tests.sqlite3", db.description)
+        let url = URL(fileURLWithPath: db.description)
+        XCTAssertEqual(url.lastPathComponent, "SQLite.swift Tests.sqlite3")
     }
-    
+
     func test_readonly_returnsFalseOnReadWriteConnections() {
         XCTAssertFalse(db.readonly)
     }
@@ -108,6 +110,10 @@ class ConnectionTests : SQLiteTestCase {
         try! db.run("SELECT * FROM users WHERE admin = ?", [0])
         try! db.run("SELECT * FROM users WHERE admin = $admin", ["$admin": 0])
         AssertSQL("SELECT * FROM users WHERE admin = 0", 4)
+    }
+
+    func test_vacuum() {
+        try! db.vacuum()
     }
 
     func test_scalar_preparesRunsAndReturnsScalarValues() {
