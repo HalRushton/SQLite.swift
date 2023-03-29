@@ -5,7 +5,7 @@ let package = Package(
     name: "SQLite.swift",
     products: [.library(name: "SQLite", targets: ["SQLite"])],
     dependencies: [
-        .package(name: "SQLCipher", url: "git@github.com:antwork/SQLCipher.git", from: "0.0.4"),
+        .package(name: "SQLCipher", url: "git@github.com:stoneburner/SQLCipher.git", from: "0.0.4"),
     ],
     targets: [
         .target(name: "SQLite", 
