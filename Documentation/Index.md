@@ -1860,6 +1860,15 @@ using the following functions.
         }
     }
     ```
+    
+    Statements with results may be iterated over, using a `RowIterator` if
+    useful.
+    
+    ```swift
+    let emailColumn = Expression<String>("email")
+    let stmt = try db.prepare("SELECT id, email FROM users")
+    let emails = try! stmt.prepareRowIterator().map { $0[emailColumn] }
+    ```
 
   - `run` prepares a single `Statement` object from a SQL string, optionally
     binds values to it (using the statement’s `bind` function), executes,
@@ -1896,6 +1905,13 @@ We can log SQL using the database’s `trace` function.
 #endif
 ```
 
+## Vacuum
+
+To run the [vacuum](https://www.sqlite.org/lang_vacuum.html) command:
+
+```swift
+try db.vacuum()
+```
 
 [ROWID]: https://sqlite.org/lang_createtable.html#rowid
 [SQLiteMigrationManager.swift]: https://github.com/garriguv/SQLiteMigrationManager.swift
